@@ -12,7 +12,7 @@ import org.bukkit.util.Vector;
 import pl.trollcraft.sectors.controller.SectorBorderController;
 import pl.trollcraft.sectors.controller.SectorController;
 import pl.trollcraft.sectors.messaging.Messenger;
-import pl.trollcraft.sectors.model.Sector;
+import pl.trollcraft.sectors.model.sector.Sector;
 import pl.trollcraft.sectors.model.geo.Border;
 import pl.trollcraft.sectors.model.geo.Direction;
 import pl.trollcraft.sectors.model.geo.Pos;
@@ -199,7 +199,7 @@ public final class SectorsDebugCommand implements CommandExecutor {
 
             }
 
-            else if (args[0].equalsIgnoreCase("border")) {
+            /*else if (args[0].equalsIgnoreCase("border")) {
 
                 World world = player.getWorld();
 
@@ -208,26 +208,26 @@ public final class SectorsDebugCommand implements CommandExecutor {
 
                 border.forEachBlock(world, 130, b -> b.setType(Material.BEDROCK));
 
-            }
+            }*/
 
             else if (args[0].equalsIgnoreCase("direction")) {
                 Direction direction = sectorBorderController.getDirection(player);
                 player.sendMessage(direction.name());
             }
 
-            else if (args[0].equalsIgnoreCase("longer-border")) {
+            /*else if (args[0].equalsIgnoreCase("longer-border")) {
 
                 player.sendMessage("Dlugosc dluzej granicy wynosi " + sectorController.getSector().getLongerBorderLength());
 
-            }
+            }*/
 
-            else if (args[0].equalsIgnoreCase("display-border")) {
+            /*else if (args[0].equalsIgnoreCase("display-border")) {
 
                 sectorBorderController.displayBorder(player);
 
-            }
+            }*/
 
-            else if (args[0].equalsIgnoreCase("angles")) {
+            /*else if (args[0].equalsIgnoreCase("angles")) {
 
                 Sector sector = sectorController.getSector();
 
@@ -243,7 +243,7 @@ public final class SectorsDebugCommand implements CommandExecutor {
                 player.sendMessage("C-C: " + Math.round(angleC));
                 player.sendMessage("D-C: " + Math.round(angleD));
 
-            }
+            }*/
 
             else if (args[0].equalsIgnoreCase("points")) {
 

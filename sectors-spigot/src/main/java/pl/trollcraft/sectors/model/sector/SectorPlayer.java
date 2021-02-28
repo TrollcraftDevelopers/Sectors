@@ -1,4 +1,4 @@
-package pl.trollcraft.sectors.model;
+package pl.trollcraft.sectors.model.sector;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

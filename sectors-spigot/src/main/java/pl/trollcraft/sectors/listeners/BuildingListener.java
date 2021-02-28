@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import pl.trollcraft.sectors.controller.SectorPlayersController;
-import pl.trollcraft.sectors.model.SectorPlayer;
+import pl.trollcraft.sectors.model.sector.SectorPlayer;
 
 import java.util.Optional;
 

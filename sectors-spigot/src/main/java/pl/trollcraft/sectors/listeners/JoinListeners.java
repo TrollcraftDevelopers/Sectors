@@ -8,9 +8,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.trollcraft.sectors.controller.SectorController;
 import pl.trollcraft.sectors.controller.SectorPlayersController;
-import pl.trollcraft.sectors.model.SectorPlayer;
+import pl.trollcraft.sectors.model.sector.SectorPlayer;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public class JoinListeners implements Listener {

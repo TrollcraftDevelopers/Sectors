@@ -2,7 +2,7 @@ package pl.trollcraft.sectors.controller;
 
 import pl.trollcraft.sectors.messaging.Messenger;
 import pl.trollcraft.sectors.model.geo.Pos;
-import pl.trollcraft.sectors.model.Sector;
+import pl.trollcraft.sectors.model.sector.Sector;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,7 +81,7 @@ public class SectorController {
                 LOG.log(Level.INFO, "Fetched sector data for this instance. Setting borders...");
 
                 sector.calculate();
-                sector.calculateDirections();
+                //sector.calculateDirections();
 
             }
             else

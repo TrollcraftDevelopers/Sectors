@@ -11,9 +11,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import pl.trollcraft.sectors.messaging.Messenger;
-import pl.trollcraft.sectors.model.SectorPlayer;
+import pl.trollcraft.sectors.model.event.transfer.SectorPreTransferEvent;
+import pl.trollcraft.sectors.model.sector.SectorPlayer;
 import pl.trollcraft.sectors.model.event.SectorAppearEvent;
-import pl.trollcraft.sectors.model.event.SectorTransferEvent;
+import pl.trollcraft.sectors.model.event.transfer.SectorPostTransferEvent;
 import pl.trollcraft.sectors.model.event.SectorLeaveEvent;
 import redis.clients.jedis.Jedis;
 
@@ -110,6 +111,7 @@ public class SectorPlayersController {
 
                 }
 
+                LOG.log(Level.INFO, "Sector is OK.");
                 LOG.log(Level.INFO, "Moving to sector (server) " + sectorName + "...");
 
                 double y = sectorPlayer.getPlayer().getLocation().getY();
@@ -121,6 +123,7 @@ public class SectorPlayersController {
                 double vz = dir.getZ();
 
                 LOG.log(Level.INFO, "Sending data to NoSQL database...");
+                jedis.set(String.format("%s.%s.from", playerName, sectorName), serverController.getServer().getName());
                 jedis.set(String.format("%s.%s.loc.x", playerName, sectorName), String.valueOf(x));
                 jedis.set(String.format("%s.%s.loc.y", playerName, sectorName), String.valueOf(y));
                 jedis.set(String.format("%s.%s.loc.z", playerName, sectorName), String.valueOf(z));
@@ -129,6 +132,7 @@ public class SectorPlayersController {
                 jedis.set(String.format("%s.%s.dir.x", playerName, sectorName), String.valueOf(vx));
                 jedis.set(String.format("%s.%s.dir.z", playerName, sectorName), String.valueOf(vz));
 
+                jedis.expire(String.format("%s.%s.from", playerName, sectorName), 30);
                 jedis.expire(String.format("%s.%s.loc.x", playerName, sectorName), 30);
                 jedis.expire(String.format("%s.%s.loc.y", playerName, sectorName), 30);
                 jedis.expire(String.format("%s.%s.loc.z", playerName, sectorName), 30);
@@ -136,6 +140,11 @@ public class SectorPlayersController {
                 jedis.expire(String.format("%s.%s.loc.pitch", playerName, sectorName), 30);
                 jedis.expire(String.format("%s.%s.dir.x", playerName, sectorName), 30);
                 jedis.expire(String.format("%s.%s.dir.z", playerName, sectorName), 30);
+
+                LOG.log(Level.INFO, "Firing preTransfer event...");
+                SectorPreTransferEvent sectorPreTransferEvent
+                        = new SectorPreTransferEvent(sectorPlayer, sectorName, jedis);
+                Bukkit.getPluginManager().callEvent(sectorPreTransferEvent);
 
                 LOG.log(Level.INFO, "Sending transfer request...");
                 ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -210,6 +219,7 @@ public class SectorPlayersController {
 
             LOG.log(Level.INFO, "Transfer data found.");
 
+            String fromSector = jedis.get(String.format("%s.%s.from", playerName, sectorName));
             double x = Double.parseDouble(jedis.get(String.format("%s.%s.loc.x", playerName, sectorName)));
             double y = Double.parseDouble(jedis.get(String.format("%s.%s.loc.y", playerName, sectorName)));
             double z = Double.parseDouble(jedis.get(String.format("%s.%s.loc.z", playerName, sectorName)));
@@ -223,20 +233,19 @@ public class SectorPlayersController {
             Vector vel = new Vector(vx, 0, vz);
             loc.add(vel.multiply(2));
 
-            LOG.log(Level.INFO, "Deleting transfer data.");
-            jedis.keys(String.format("%s.%s.*", playerName, sectorName))
-                    .forEach(jedis::del);
-
             LOG.log(Level.INFO, "Positioning player.");
 
             sectorPlayer.getPlayer().teleport(loc);
             sectorPlayer.getPlayer().getLocation().setDirection(vel);
 
             // Firing event when player is ready
-            SectorTransferEvent sectorTransferEvent
-                    = new SectorTransferEvent(sectorPlayer);
-            Bukkit.getPluginManager().callEvent(sectorTransferEvent);
+            SectorPostTransferEvent sectorPostTransferEvent
+                    = new SectorPostTransferEvent(sectorPlayer, sectorName, fromSector, jedis);
+            Bukkit.getPluginManager().callEvent(sectorPostTransferEvent);
 
+            LOG.log(Level.INFO, "Deleting transfer data.");
+            jedis.keys(String.format("%s.%s.*", playerName, sectorName))
+                    .forEach(jedis::del);
         }
         else
             LOG.log(Level.INFO, "Probably joined the server.");

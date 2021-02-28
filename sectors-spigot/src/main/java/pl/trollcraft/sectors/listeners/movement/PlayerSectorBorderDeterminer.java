@@ -10,6 +10,7 @@ import pl.trollcraft.sectors.controller.SectorPlayersController;
 
 import java.util.logging.Logger;
 
+@Deprecated
 public class PlayerSectorBorderDeterminer {
 
     private static final Logger LOG
@@ -17,7 +18,7 @@ public class PlayerSectorBorderDeterminer {
 
     private final Plugin plugin;
     private final SectorController sectorController;
-    private final SectorBorderController sectorBorderController;
+    //private final SectorBorderController sectorBorderController;
     private final SectorPlayersController sectorPlayersController;
     private final BukkitTask task;
 
@@ -29,7 +30,7 @@ public class PlayerSectorBorderDeterminer {
         this.plugin = plugin;
         this.sectorController = sectorController;
         this.sectorPlayersController = sectorPlayersController;
-        this.sectorBorderController = sectorBorderController;
+        //this.sectorBorderController = sectorBorderController;
         task = setupTask();
     }
 
@@ -51,7 +52,7 @@ public class PlayerSectorBorderDeterminer {
                         .forEach( p -> {
 
                             Player player = p.getPlayer();
-                            sectorBorderController.displayBorder(player);
+                            //sectorBorderController.displayBorder(player);
 
                         } );
 

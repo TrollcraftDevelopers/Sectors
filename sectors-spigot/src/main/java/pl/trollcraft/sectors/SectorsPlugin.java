@@ -15,7 +15,6 @@ import pl.trollcraft.sectors.controller.ServerController;
 import pl.trollcraft.sectors.listeners.*;
 import pl.trollcraft.sectors.listeners.movement.PlayerCheckpointCreatorListener;
 import pl.trollcraft.sectors.listeners.movement.PlayerNearSectorEndListener;
-import pl.trollcraft.sectors.listeners.movement.PlayerSectorBorderDeterminer;
 import pl.trollcraft.sectors.listeners.movement.PlayerSectorLeaveListener;
 import pl.trollcraft.sectors.messaging.Messenger;
 import redis.clients.jedis.Jedis;
@@ -37,7 +36,7 @@ public class SectorsPlugin extends JavaPlugin {
     private PlayerSectorLeaveListener playerSectorLeaveListener;
     private PlayerCheckpointCreatorListener playerCheckpointCreatorListener;
     private PlayerNearSectorEndListener playerNearSectorEndListener;
-    private PlayerSectorBorderDeterminer playerSectorBorderDeterminer;
+    //private PlayerSectorBorderDeterminer playerSectorBorderDeterminer;
 
     private ComponentsManager componentsManager;
 
@@ -103,8 +102,8 @@ public class SectorsPlugin extends JavaPlugin {
         playerNearSectorEndListener = new PlayerNearSectorEndListener(this,
                 serverController, sectorPlayersController, sectorController);
 
-        playerSectorBorderDeterminer = new PlayerSectorBorderDeterminer(this,
-                sectorController, sectorPlayersController, sectorBorderController);
+        /*playerSectorBorderDeterminer = new PlayerSectorBorderDeterminer(this,
+                sectorController, sectorPlayersController, sectorBorderController);*/
 
         getLogger().log(Level.INFO, "Completed enabling.");
 
@@ -120,7 +119,7 @@ public class SectorsPlugin extends JavaPlugin {
         playerSectorLeaveListener.cancel();
         playerCheckpointCreatorListener.cancel();
         playerNearSectorEndListener.cancel();
-        playerSectorBorderDeterminer.cancel();
+        //playerSectorBorderDeterminer.cancel();
 
         getLogger().log(Level.INFO, "Disabled.");
     }

@@ -2,7 +2,7 @@ package pl.trollcraft.sectors.model.event.border;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import pl.trollcraft.sectors.model.SectorPlayer;
+import pl.trollcraft.sectors.model.sector.SectorPlayer;
 
 public class SectorBorderMoveAwayEvent extends Event {
 

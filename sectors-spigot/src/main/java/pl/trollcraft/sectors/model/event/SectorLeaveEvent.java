@@ -3,7 +3,7 @@ package pl.trollcraft.sectors.model.event;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import pl.trollcraft.sectors.model.SectorPlayer;
+import pl.trollcraft.sectors.model.sector.SectorPlayer;
 
 public class SectorLeaveEvent extends Event implements Cancellable {
 

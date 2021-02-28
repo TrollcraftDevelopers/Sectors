@@ -1,13 +1,7 @@
 package pl.trollcraft.sectors.controller;
 
-import com.comphenix.protocol.wrappers.EnumWrappers;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
-import pl.trollcraft.sectors.help.packet.WrapperPlayServerWorldBorder;
-import pl.trollcraft.sectors.model.Sector;
 import pl.trollcraft.sectors.model.geo.Direction;
-import pl.trollcraft.sectors.model.geo.Pos;
 
 public class SectorBorderController {
 
@@ -55,12 +49,13 @@ public class SectorBorderController {
 
     }
 
-    public double angle(Vector v, Vector dir) {
+    /*public double angle(Vector v, Vector dir) {
         double vL = Math.sqrt( Math.pow(v.getX(), 2) + Math.pow(v.getZ(), 2) );
         double dirL = Math.sqrt( Math.pow(dir.getX(), 2) + Math.pow(dir.getZ(), 2) );
         return Math.toDegrees( Math.acos ( (v.getX()*dir.getX() + v.getZ()*dir.getZ()) / (vL * dirL)) );
-    }
+    }*/
 
+    /*
     public void displayBorder(Player player) {
 
         Sector sector = sectorController.getSector();
@@ -97,8 +92,9 @@ public class SectorBorderController {
         sendBorderPacket(player, x, z, l+2);
 
     }
+     */
 
-    public Pos getPointOf(Player player) {
+    /*public Pos getPointOf(Player player) {
 
         Sector sector = sectorController.getSector();
         Vector dir = player.getLocation().getDirection();
@@ -127,9 +123,9 @@ public class SectorBorderController {
 
         else return sector.getD();
 
-    }
+    }*/
 
-    private void sendBorderPacket(Player player,
+    /*private void sendBorderPacket(Player player,
                                   double x,
                                   double z,
                                   double r) {
@@ -145,6 +141,6 @@ public class SectorBorderController {
         border.setSpeed(0);
         border.setAction(EnumWrappers.WorldBorderAction.INITIALIZE);
         border.sendPacket(player);
-    }
+    }*/
 
 }

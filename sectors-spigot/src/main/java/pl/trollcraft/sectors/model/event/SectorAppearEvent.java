@@ -2,14 +2,15 @@ package pl.trollcraft.sectors.model.event;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import pl.trollcraft.sectors.model.SectorPlayer;
+import pl.trollcraft.sectors.model.event.transfer.SectorPostTransferEvent;
+import pl.trollcraft.sectors.model.sector.SectorPlayer;
 
 /**
  * Called when a player appears in the sector.
  * It isn't known yet if he entered the sector from
  * other sector.
  *
- * @see SectorTransferEvent
+ * @see SectorPostTransferEvent
  * @author Jakub Zelmanowicz
  */
 public class SectorAppearEvent extends Event {

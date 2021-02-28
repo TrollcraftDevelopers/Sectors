@@ -1,6 +1,6 @@
 package pl.trollcraft.sectors.model;
 
-public interface SectorData {
+public interface Property {
 
     String identification();
 

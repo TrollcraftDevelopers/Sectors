@@ -1,0 +1,6 @@
+# Project exclude paths
+/reports-bungee/target/
+/reports-spigot/target/
+/sectors-bungee/target/
+/sectors-data-transfer/target/
+/sectors-spigot/target/

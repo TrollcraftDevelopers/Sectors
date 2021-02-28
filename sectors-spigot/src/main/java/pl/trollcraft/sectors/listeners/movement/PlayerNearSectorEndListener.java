@@ -11,7 +11,7 @@ import org.bukkit.scheduler.BukkitTask;
 import pl.trollcraft.sectors.controller.SectorController;
 import pl.trollcraft.sectors.controller.SectorPlayersController;
 import pl.trollcraft.sectors.controller.ServerController;
-import pl.trollcraft.sectors.model.Sector;
+import pl.trollcraft.sectors.model.sector.Sector;
 import pl.trollcraft.sectors.model.event.border.SectorBorderApproachEvent;
 import pl.trollcraft.sectors.model.event.border.SectorBorderMoveAwayEvent;
 import pl.trollcraft.sectors.model.indicators.BossBarIndicator;

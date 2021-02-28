@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pl.trollcraft.sectors.controller.SectorPlayersController;
-import pl.trollcraft.sectors.model.SectorPlayer;
+import pl.trollcraft.sectors.model.sector.SectorPlayer;
 
 import java.util.Optional;
 import java.util.logging.Level;
