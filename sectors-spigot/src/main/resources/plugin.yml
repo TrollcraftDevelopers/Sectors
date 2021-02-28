@@ -1,0 +1,14 @@
+name: Sectors
+version: 1.0-SNAPSHOT
+main: pl.trollcraft.sectors.SectorsPlugin
+author: 'Jakub Zelmanowicz'
+api-version: 1.16
+
+load: POSTWORLD
+
+commands:
+  sector:
+    description: Simple debug commands of sectors plugin.
+
+  sectors:
+    description: GUI sectors performance report.

@@ -1,0 +1,4 @@
+components:
+  DataTransfer:
+    file: 'DataTransferComponent.jar'
+    class: 'dev.zelmanowicz.dataTransfer.DataTransferComponent'

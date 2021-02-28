@@ -1,0 +1,4 @@
+name: BungeeSectors
+version: 1.0-SNAPSHOT
+main: pl.trollcraft.sectors.BungeeSectorsPlugin
+author: 'Jakub Zelmanowicz'

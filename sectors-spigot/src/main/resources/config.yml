@@ -1,0 +1,14 @@
+# Sector configuration file.
+
+serverName: su1
+worldName: world
+
+# Distance between a player and a border
+# of the sector needed for the plugin
+# to display warning action bar message.
+warningDistance: 50.0
+
+# Distance between player and sector,
+# which makes player unable to place or
+# break blocks.
+cancelBuildingDistance: 50.0
