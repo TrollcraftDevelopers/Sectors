@@ -10,7 +10,6 @@ import pl.trollcraft.sectors.messaging.Messenger;
 import pl.trollcraft.sectors.messaging.RequestsController;
 import pl.trollcraft.sectors.messaging.requests.DetermineSectorRequest;
 import pl.trollcraft.sectors.messaging.requests.GetSectorRequest;
-import pl.trollcraft.sectors.messaging.requests.GetSectorsReportRequest;
 import redis.clients.jedis.Jedis;
 
 public class BungeeSectorsPlugin extends Plugin {
@@ -28,7 +27,7 @@ public class BungeeSectorsPlugin extends Plugin {
         jedis = new Jedis("localhost");
 
         sectorsController = new SectorsController(this);
-        sectorsController.runSectorsInformationUpdater();
+        //sectorsController.runSectorsInformationUpdater();
 
         ConfigProvider defaultConfigProvider = new ConfigProvider(this, "config.yml");
         new SectorsConfig(sectorsController).configure(defaultConfigProvider);
@@ -36,7 +35,6 @@ public class BungeeSectorsPlugin extends Plugin {
         requestsController = new RequestsController();
         requestsController.register(new GetSectorRequest(sectorsController));
         requestsController.register(new DetermineSectorRequest(sectorsController));
-        requestsController.register(new GetSectorsReportRequest(jedis, sectorsController));
 
         messenger = new Messenger(this, requestsController);
 

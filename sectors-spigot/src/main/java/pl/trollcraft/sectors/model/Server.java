@@ -2,13 +2,23 @@ package pl.trollcraft.sectors.model;
 
 public class Server {
 
-    private String name;
+    private String groupName;
+    private String sectorName;
 
-    public void setName(String name) {
-        this.name = name;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public String getName() {
-        return name;
+    public String getSectorName() {
+        return sectorName;
     }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public void setSectorName(String sectorName) {
+        this.sectorName = sectorName;
+    }
+
 }

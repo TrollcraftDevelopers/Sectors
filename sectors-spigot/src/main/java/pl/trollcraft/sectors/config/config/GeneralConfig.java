@@ -16,9 +16,12 @@ public class GeneralConfig implements Config{
 
     @Override
     public void configure(ConfigProvider provider) {
+        String groupName = provider.read("groupName", String.class);
         String serverName = provider.read("serverName", String.class);
+
         Server server = new Server();
-        server.setName(serverName);
+        server.setGroupName(groupName);
+        server.setSectorName(serverName);
 
         String worldName = provider.read("worldName", String.class);
         World world = Bukkit.getWorld(worldName);

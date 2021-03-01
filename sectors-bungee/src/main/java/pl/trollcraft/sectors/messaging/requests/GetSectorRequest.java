@@ -24,8 +24,10 @@ public class GetSectorRequest implements Request {
     @Override
     public String[] process(String[] data) {
 
-        String serverName = data[0];
-        Optional<Sector> oSector = sectorsController.get(serverName);
+        String groupName = data[0];
+        String serverName = data[1];
+
+        Optional<Sector> oSector = sectorsController.get(groupName, serverName);
 
         if (oSector.isPresent()) {
 

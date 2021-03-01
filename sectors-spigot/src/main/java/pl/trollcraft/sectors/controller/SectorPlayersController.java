@@ -70,11 +70,14 @@ public class SectorPlayersController {
      */
     public void exitSector(SectorPlayer sectorPlayer) {
 
+        String groupName = serverController.getServer().getGroupName();
+
         LOG.log(Level.INFO, sectorPlayer.getPlayer().getName() + " exited the sector.");
         double x = sectorPlayer.getX();
         double z = sectorPlayer.getZ();
 
         String[] data = new String[] {
+                groupName,
                 String.valueOf(x),
                 String.valueOf(z)
         };
@@ -123,7 +126,7 @@ public class SectorPlayersController {
                 double vz = dir.getZ();
 
                 LOG.log(Level.INFO, "Sending data to NoSQL database...");
-                jedis.set(String.format("%s.%s.from", playerName, sectorName), serverController.getServer().getName());
+                jedis.set(String.format("%s.%s.from", playerName, sectorName), serverController.getServer().getSectorName());
                 jedis.set(String.format("%s.%s.loc.x", playerName, sectorName), String.valueOf(x));
                 jedis.set(String.format("%s.%s.loc.y", playerName, sectorName), String.valueOf(y));
                 jedis.set(String.format("%s.%s.loc.z", playerName, sectorName), String.valueOf(z));
@@ -210,7 +213,7 @@ public class SectorPlayersController {
                 = new SectorAppearEvent(sectorPlayer);
         Bukkit.getPluginManager().callEvent(sectorAppearEvent);
 
-        String sectorName = serverController.getServer().getName();
+        String sectorName = serverController.getServer().getSectorName();
         String playerName = sectorPlayer.getPlayer().getName();
 
         LOG.log(Level.INFO, "Player " + playerName + " appeared in the sector (" + sectorName + ")");

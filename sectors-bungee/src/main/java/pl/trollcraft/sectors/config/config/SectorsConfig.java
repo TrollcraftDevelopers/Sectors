@@ -5,10 +5,16 @@ import pl.trollcraft.sectors.config.ConfigProvider;
 import pl.trollcraft.sectors.controller.SectorsController;
 import pl.trollcraft.sectors.model.Pos;
 import pl.trollcraft.sectors.model.Sector;
+import pl.trollcraft.sectors.model.SectorsGroup;
 
-public class SectorsConfig implements Config{
+import java.util.logging.Logger;
 
-    private SectorsController sectorsController;
+public class SectorsConfig implements Config {
+
+    private static final Logger LOG
+            = Logger.getLogger(SectorsConfig.class.getSimpleName());
+
+    private final SectorsController sectorsController;
 
     public SectorsConfig(SectorsController sectorsController) {
         this.sectorsController = sectorsController;
@@ -17,20 +23,31 @@ public class SectorsConfig implements Config{
     @Override
     public void configure(ConfigProvider provider) {
 
-        Configuration sectors = provider.read("sectors", Configuration.class);
-        sectors.getKeys().forEach( secName -> {
+        Configuration sectorsGroups = provider.read("sectors", Configuration.class);
+        sectorsGroups.getKeys().forEach( sectorsGroup -> {
 
-            double x = provider.read("sectors." + secName + ".region.a.x", Double.class);
-            double y = provider.read("sectors." + secName + ".region.a.y", Double.class);
-            Pos a = new Pos(x, y);
+            LOG.info("Creating sectors group of name: " + sectorsGroup + ".");
+            sectorsController.store(new SectorsGroup(sectorsGroup));
 
-            x = provider.read("sectors." + secName + ".region.b.x", Double.class);
-            y = provider.read("sectors." + secName + ".region.b.y", Double.class);
-            Pos b = new Pos(x, y);
+            Configuration sectors = provider.read("sectors." + sectorsGroup, Configuration.class);
+            sectors.getKeys().forEach( secName -> {
 
-            sectorsController.store(new Sector(secName, a, b));
+                double x = provider.read("sectors." + sectorsGroup + "." + secName + ".region.a.x", Double.class);
+                double y = provider.read("sectors." + sectorsGroup + "." + secName + ".region.a.y", Double.class);
+                Pos a = new Pos(x, y);
+
+                x = provider.read("sectors." + sectorsGroup + "." + secName + ".region.b.x", Double.class);
+                y = provider.read("sectors." + sectorsGroup + "." + secName + ".region.b.y", Double.class);
+                Pos b = new Pos(x, y);
+
+                LOG.info("Registering sector " + secName + " to group " + sectorsGroup + ".");
+                sectorsController.store(sectorsGroup, new Sector(secName, a, b));
+
+            } );
 
         } );
+
+
 
     }
 

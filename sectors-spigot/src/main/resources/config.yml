@@ -1,6 +1,8 @@
 # Sector configuration file.
 
+groupName: survival
 serverName: su1
+
 worldName: world
 
 # Distance between a player and a border

@@ -57,10 +57,14 @@ public class SectorController {
             return;
         }
 
-        String serverName = serverController.getServer().getName();
-        LOG.log(Level.INFO, "Fetching sector from central bungee server for name " + serverName);
+        String groupName = serverController.getServer().getGroupName();
+        String serverName = serverController.getServer().getSectorName();
+
+        LOG.log(Level.INFO, "Fetching sector from central bungee server for name "
+                + serverName + " from group " + groupName);
 
         String[] data = new String[]{
+                groupName,
                 serverName
         };
 

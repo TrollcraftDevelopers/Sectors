@@ -1,13 +1,20 @@
 package pl.trollcraft.sectors.model.sector;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.util.Vector;
 import pl.trollcraft.sectors.model.Property;
+import pl.trollcraft.sectors.model.event.calc.CalculationState;
+import pl.trollcraft.sectors.model.event.calc.SectorCalculatingEvent;
+import pl.trollcraft.sectors.model.geo.Axis;
 import pl.trollcraft.sectors.model.geo.Border;
+import pl.trollcraft.sectors.model.geo.Direction;
 import pl.trollcraft.sectors.model.geo.Pos;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * A 2D chart of world
@@ -27,12 +34,10 @@ public class Sector {
 
     private List<Property> properties;
 
-    /*
     private Vector aC;
     private Vector bC;
     private Vector cC;
     private Vector dC;
-    */
 
     private Border[] borders;
 
@@ -116,6 +121,10 @@ public class Sector {
      */
     public void calculate() {
 
+        SectorCalculatingEvent sectorCalculatingEvent =
+                new SectorCalculatingEvent(CalculationState.PRE, this, false);
+        Bukkit.getPluginManager().callEvent(sectorCalculatingEvent);
+
         double xa = a.getX();
         double za = a.getZ();
         double xb = b.getX();
@@ -133,9 +142,11 @@ public class Sector {
             d = new Pos(xb, za);
         }
 
+        //TODO Move to separate component whole border system.
+
         // Calculating vectors
 
-        /*aC = new Vector(center.getX() - a.getX(), 0, center.getZ() - a.getZ()).normalize();
+        aC = new Vector(center.getX() - a.getX(), 0, center.getZ() - a.getZ()).normalize();
         bC = new Vector(center.getX() - b.getX(), 0, center.getZ() - b.getZ()).normalize();
         cC = new Vector(center.getX() - c.getX(), 0, center.getZ() - c.getZ()).normalize();
         dC = new Vector(center.getX() - d.getX(), 0, center.getZ() - d.getZ()).normalize();
@@ -165,10 +176,14 @@ public class Sector {
         xBorders.get(1).setDirection(Direction.WEST);
 
         // Determining longer border.
-        longerBorderLength = zBorders.get(0).length();
+        /*longerBorderLength = zBorders.get(0).length();
         double l = xBorders.get(0).length();
         if (l > longerBorderLength)
             longerBorderLength = l;*/
+
+        sectorCalculatingEvent =
+                new SectorCalculatingEvent(CalculationState.POST, this, false);
+        Bukkit.getPluginManager().callEvent(sectorCalculatingEvent);
 
     }
 

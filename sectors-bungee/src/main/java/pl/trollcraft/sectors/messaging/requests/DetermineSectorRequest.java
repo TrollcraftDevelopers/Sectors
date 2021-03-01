@@ -1,7 +1,5 @@
 package pl.trollcraft.sectors.messaging.requests;
 
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.config.ServerInfo;
 import pl.trollcraft.sectors.controller.SectorsController;
 import pl.trollcraft.sectors.messaging.Request;
 import pl.trollcraft.sectors.model.Sector;
@@ -26,10 +24,11 @@ public class DetermineSectorRequest implements Request {
     @Override
     public String[] process(String[] data) {
 
-        double x = Double.parseDouble(data[0]);
-        double z = Double.parseDouble(data[1]);
+        String groupName = data[0];
+        double x = Double.parseDouble(data[1]);
+        double z = Double.parseDouble(data[2]);
 
-        Optional<Sector> oSector = sectorsController.get(x, z);
+        Optional<Sector> oSector = sectorsController.get(groupName, x, z);
 
         if (oSector.isPresent()) {
 
