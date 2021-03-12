@@ -15,10 +15,12 @@ public class SectorPlayer {
     private Location lastSectorLocation;
 
     private boolean nearBorder;
+    private boolean sentToOtherSector;
 
     public SectorPlayer(Player player) {
         this.player = player;
         nearBorder = false;
+        sentToOtherSector = false;
     }
 
     public Player getPlayer() {
@@ -47,5 +49,13 @@ public class SectorPlayer {
 
     public void setNearBorder(boolean nearBorder) {
         this.nearBorder = nearBorder;
+    }
+
+    public boolean isBeingSentToOtherSector() {
+        return sentToOtherSector;
+    }
+
+    public void setSentToOtherSector(boolean sentToOtherSector) {
+        this.sentToOtherSector = sentToOtherSector;
     }
 }

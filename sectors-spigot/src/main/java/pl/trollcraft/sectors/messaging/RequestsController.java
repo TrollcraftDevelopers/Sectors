@@ -3,6 +3,7 @@ package pl.trollcraft.sectors.messaging;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -21,9 +22,11 @@ public class RequestsController implements PluginMessageListener {
 
     private static final String REQ_CHANNEL = "tc:sectorsrequests";
 
+    private final Plugin plugin;
     private final List<Request> bungeeRequests;
 
     public RequestsController(Plugin plugin) {
+        this.plugin = plugin;
         bungeeRequests = new ArrayList<>();
 
         plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, REQ_CHANNEL);
@@ -45,7 +48,7 @@ public class RequestsController implements PluginMessageListener {
 
         if (channel.equals(REQ_CHANNEL)) {
 
-            LOG.log(Level.INFO, "Received request.");
+            LOG.log(Level.INFO, "Received a request.");
 
             ByteArrayDataInput in = ByteStreams.newDataInput(bytes);
 
@@ -70,6 +73,15 @@ public class RequestsController implements PluginMessageListener {
                 out.writeByte(response.length);
                 for (String r : response)
                     out.writeUTF(r);
+
+                Bukkit.getOnlinePlayers().stream()
+                        .findFirst()
+                        .ifPresent( p -> {
+
+                            p.sendPluginMessage(plugin, REQ_CHANNEL, out.toByteArray());
+                            LOG.log(Level.INFO, "Forwarded the message successfully.");
+
+                        }  );
 
             }
             else

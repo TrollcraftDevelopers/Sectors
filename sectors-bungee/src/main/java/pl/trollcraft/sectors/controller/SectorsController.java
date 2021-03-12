@@ -8,8 +8,6 @@ import pl.trollcraft.sectors.model.SectorsGroup;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SectorsController {
@@ -18,11 +16,14 @@ public class SectorsController {
             = Logger.getLogger(SectorsController.class.getSimpleName());
 
     private final Plugin plugin;
+
     private final List<SectorsGroup> sectorsGroups;
+    private final List<Sector> sectors;
 
     public SectorsController(Plugin plugin){
         this.plugin = plugin;
         sectorsGroups = new ArrayList<>();
+        sectors = new ArrayList<>();
     }
 
     public void store(SectorsGroup sectorsGroup) {
@@ -32,6 +33,7 @@ public class SectorsController {
     public void store(String sectorsGroupName,
                       Sector sector) {
 
+        sectors.add(sector);
         sectorsGroups.stream()
                 .filter(sectorsGroup -> sectorsGroup.getName().equals(sectorsGroupName))
                 .findFirst()
@@ -46,6 +48,28 @@ public class SectorsController {
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Unknown sectors group."))
                 .getSectors();
+    }
+
+    public Optional<SectorsGroup> getSectorsGroup(String sectorName) {
+        Optional<Sector> oSector = getSector(sectorName);
+        if (!oSector.isPresent())
+            return Optional.empty();
+
+        Sector sector = oSector.get();
+
+        return sectorsGroups.stream()
+                .filter(sectorsGroup -> sectorsGroup.getSectors().contains(sector))
+                .findFirst();
+    }
+
+    public List<SectorsGroup> getAllGroups() {
+        return sectorsGroups;
+    }
+
+    public Optional<Sector> getSector(String sectorName) {
+        return sectors.stream()
+                .filter( sector -> sector.getServerName().equals(sectorName) )
+                .findFirst();
     }
 
     public Optional<Sector> get(String sectorsGroupName,
@@ -74,6 +98,12 @@ public class SectorsController {
                 .getSectors()
                 .stream()
                 .filter( sec -> sec.getServerName().equals(serverName) )
+                .findFirst();
+    }
+
+    public Optional<SectorsGroup> get(String sectorsGroupName) {
+        return sectorsGroups.stream()
+                .filter(sectorsGroup -> sectorsGroup.getName().equals(sectorsGroupName))
                 .findFirst();
     }
 

@@ -1,16 +1,15 @@
 package pl.trollcraft.sectors.commands;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 import pl.trollcraft.sectors.controller.SectorBorderController;
 import pl.trollcraft.sectors.controller.SectorController;
+import pl.trollcraft.sectors.controller.ServerController;
 import pl.trollcraft.sectors.messaging.Messenger;
 import pl.trollcraft.sectors.model.sector.Sector;
 import pl.trollcraft.sectors.model.geo.Border;
@@ -26,16 +25,19 @@ import pl.trollcraft.sectors.model.geo.Pos;
 public final class SectorsDebugCommand implements CommandExecutor {
 
     private final Messenger messenger;
+    private final ServerController serverController;
     private final SectorController sectorController;
     private final SectorBorderController sectorBorderController;
 
     private Pos a, b;
 
     public SectorsDebugCommand(Messenger messenger,
+                               ServerController serverController,
                                SectorController sectorController,
                                SectorBorderController sectorBorderController) {
 
         this.messenger = messenger;
+        this.serverController = serverController;
         this.sectorController = sectorController;
         this.sectorBorderController = sectorBorderController;
     }
@@ -61,11 +63,12 @@ public final class SectorsDebugCommand implements CommandExecutor {
                             "/sector data - info. o tej sektorze tej instancji.\n" +
                             "/sector sign-borders - rysuje granice czasteczkami.\n" +
                             "/sector dist - pokazuje odleglosci do granic.\n" +
-                            "/sector border <kierunek> - zaznacza wektor.\n" +
+                            //"/sector border <kierunek> - zaznacza wektor.\n" +
                             "/sector direction - pokazuje Twoj kierunek.\n" +
-                            "/sector longer-border - zwraca dl. dluzej granicy.\n" +
-                            "/sector angles - zwraca katy w stopniach pomiedzy Toba, a wektorami punktow.\n" +
-                            "/sector points - zwraca info. o punktach."
+                            //"/sector longer-border - zwraca dl. dluzej granicy.\n" +
+                            //"/sector angles - zwraca katy w stopniach pomiedzy Toba, a wektorami punktow.\n" +
+                            "/sector points - zwraca info. o punktach.\n" +
+                            "/sector syncTest - testuje synchronizatory."
             );
         }
         else {
@@ -253,6 +256,35 @@ public final class SectorsDebugCommand implements CommandExecutor {
                 player.sendMessage("B: " + sector.getB().toString());
                 player.sendMessage("C: " + sector.getC().toString());
                 player.sendMessage("D: " + sector.getD().toString());
+
+            }
+
+            else if (args[0].equalsIgnoreCase("syncTest")) {
+
+                if (args.length < 2)
+                    sender.sendMessage("Uzycie: /sector syncTest <wiadomosci>");
+
+                else {
+
+                    String groupName = serverController.getServer().getGroupName();
+
+                    String[] syncMessage = new String[args.length];
+                    syncMessage[0] = groupName;
+                    for (int i = 1 ; i < args.length ; i++)
+                            syncMessage[i] = args[i];
+
+                    messenger.forward((byte) 3, syncMessage, res -> {
+
+                        if (res[0].equals("OK"))
+                            sender.sendMessage("Przyjeto zadanie synchronizacji.");
+                        else
+                            sender.sendMessage("Blad przetwarzania zadania na serwerze centralnym.");
+
+                    });
+
+                    sender.sendMessage("Wyslano zadanie synchronizacji.");
+
+                }
 
             }
 

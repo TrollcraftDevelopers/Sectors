@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -81,7 +82,7 @@ public class Messenger implements Listener {
 
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
-        out.writeInt(requestId);
+        out.writeByte(requestId);
         out.writeUTF(id.toString());
 
         out.writeByte(data.length);
@@ -109,7 +110,12 @@ public class Messenger implements Listener {
         String channel = event.getTag();
         if (channel.equals(CHANNEL)) {
 
-            LOG.log(Level.INFO, "Received a request.");
+
+            String from = ((Server) event.getSender())
+                    .getInfo()
+                    .getName();
+
+            LOG.log(Level.INFO, "Received a request from " + from);
 
             ByteArrayDataInput in = ByteStreams
                     .newDataInput(event.getData());
@@ -124,7 +130,7 @@ public class Messenger implements Listener {
 
             requestsController.get(requestId).ifPresent( req -> {
 
-                String[] res = req.process(data);
+                String[] res = req.process(from, data);
 
                 Server server = (Server) event.getSender();
                 ServerInfo info = server.getInfo();
@@ -154,7 +160,7 @@ public class Messenger implements Listener {
                 ServerRequest r = oReq.get();
                 requests.remove(r);
 
-                int l = in.readInt();
+                int l = in.readByte();
                 String[] message = new String[l];
 
                 LOG.log(Level.INFO, "Message length is " + l);

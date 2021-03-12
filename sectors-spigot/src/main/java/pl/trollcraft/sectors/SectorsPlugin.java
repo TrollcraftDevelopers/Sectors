@@ -17,6 +17,8 @@ import pl.trollcraft.sectors.listeners.movement.PlayerCheckpointCreatorListener;
 import pl.trollcraft.sectors.listeners.movement.PlayerNearSectorEndListener;
 import pl.trollcraft.sectors.listeners.movement.PlayerSectorLeaveListener;
 import pl.trollcraft.sectors.messaging.Messenger;
+import pl.trollcraft.sectors.messaging.RequestsController;
+import pl.trollcraft.sectors.messaging.requests.SyncRequest;
 import redis.clients.jedis.Jedis;
 
 import java.util.logging.Level;
@@ -25,6 +27,7 @@ public class SectorsPlugin extends JavaPlugin {
 
     private Jedis jedis;
     private Messenger messenger;
+    private RequestsController requestsController;
 
     private ServerController serverController;
     private SectorPlayersController sectorPlayersController;
@@ -53,6 +56,9 @@ public class SectorsPlugin extends JavaPlugin {
 
         messenger = new Messenger(this);
 
+        requestsController = new RequestsController(this);
+        requestsController.register(new SyncRequest());
+
         sectorPlayersController = new SectorPlayersController(this, messenger, jedis, serverController);
         sectorController = new SectorController(messenger, serverController);
 
@@ -75,7 +81,7 @@ public class SectorsPlugin extends JavaPlugin {
         assert sectorDebugCommand != null;
         assert sectorsExtensiveCommand != null;
 
-        sectorDebugCommand.setExecutor(new SectorsDebugCommand(messenger,
+        sectorDebugCommand.setExecutor(new SectorsDebugCommand(messenger, serverController,
                 sectorController, sectorBorderController));
 
         this.sectorsExtensiveCommand = new SectorsExtensiveCommand();
@@ -90,8 +96,12 @@ public class SectorsPlugin extends JavaPlugin {
         getServer().getPluginManager()
                 .registerEvents(new QuitListeners(sectorPlayersController), this);
 
-        getServer().getPluginManager()
-                .registerEvents(new BuildingListener(sectorPlayersController), this);
+        //TODO move to separate component.
+        /*getServer().getPluginManager()
+                .registerEvents(new BuildingListener(sectorPlayersController), this);*/
+
+        /*getServer().getPluginManager()
+                .registerEvents(new SyncTestListener(), this);*/
 
         playerSectorLeaveListener = new PlayerSectorLeaveListener(this,
                 sectorPlayersController, sectorController);
@@ -138,5 +148,9 @@ public class SectorsPlugin extends JavaPlugin {
 
     public SectorsExtensiveCommand getSectorsExtensiveCommand() {
         return sectorsExtensiveCommand;
+    }
+
+    public RequestsController getRequestsController() {
+        return requestsController;
     }
 }

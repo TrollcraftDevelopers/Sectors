@@ -17,9 +17,15 @@ public class ConfigProvider {
     private static final Logger LOG =
             Logger.getLogger(ConfigProvider.class.getTypeName());
 
+    private final Plugin plugin;
+    private final String fileName;
+
     private Configuration conf;
 
     public ConfigProvider(Plugin plugin, String fileName) {
+
+        this.plugin = plugin;
+        this.fileName = fileName;
 
         if (!plugin.getDataFolder().exists() && plugin.getDataFolder().mkdir())
             LOG.log(Level.INFO, "Created data folder.");
@@ -53,6 +59,24 @@ public class ConfigProvider {
 
     public void write(String key, Object o) {
         conf.set(key, o);
+    }
+
+    public Configuration getConf() {
+        return conf;
+    }
+
+    public boolean save() {
+        try {
+
+            ConfigurationProvider.getProvider(YamlConfiguration.class)
+                    .save(conf, new File(plugin.getDataFolder(), fileName));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
 }

@@ -22,7 +22,7 @@ public class DetermineSectorRequest implements Request {
     }
 
     @Override
-    public String[] process(String[] data) {
+    public String[] process(String from, String[] data) {
 
         String groupName = data[0];
         double x = Double.parseDouble(data[1]);

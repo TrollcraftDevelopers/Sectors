@@ -57,7 +57,12 @@ public class Sector {
         return online;
     }
 
-    public void update() {
+    public ServerInfo getServerInfo() {
+        return ProxyServer.getInstance().getServerInfo(serverName);
+    }
+
+    // Will be moved to a separate component.
+    /*public void update() {
 
         ProxyServer proxy = ProxyServer.getInstance();
         ServerInfo serverInfo = proxy.getServerInfo(serverName);
@@ -84,6 +89,6 @@ public class Sector {
 
         });
 
-    }
+    }*/
 
 }
